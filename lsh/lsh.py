@@ -1,64 +1,72 @@
-from random import shuffle
+from random import randint, shuffle
 
-# shingle function
+# Shingle function
 def shingle(text: str, k: int):
     shingle_list = []
     for i in range(len(text) - k + 1):
         shingle_list.append(text[i:i+k])
     return shingle_list
 
-# test shingle
-a = set(shingle('The first test', 2))
-b = set(shingle('It is the best', 2))
-print(a)  # print the set of a
-print(b)  # print the set of b
-
-# create vocab 
-vocab = list(a.union(b))
-
-# one hot encoding
+# One-hot encoding
 def one_hot_encoding(vocab, data):
     one_hot = [1 if x in data else 0 for x in vocab]
     return one_hot
 
-# test one_hot_encoding
-result = one_hot_encoding(vocab, list(a))
-print(result)
-
-
 # MinHash
 
 def create_hash_func(size: int):
-    hash_ex = list(range(1, len(vocab) + 1))
-    print("hash = ", hash_ex)
-    shuffle(hash_ex)  # shuffle list
-    print("Shuffle = ", hash_ex)
+    # Create a list of random hash values
+    hash_ex = [randint(1, 1000) for _ in range(size)]
     return hash_ex
 
 def build_minhash_func(vocab_size: int, nbits: int):
-    # with this function, you can build multiple minhash vectors
+    # Build multiple MinHash vectors
     hashes = []
     for _ in range(nbits):
         hashes.append(create_hash_func(vocab_size))
     return hashes
 
-# here I create 2 minhash vectors
-minhash_func = build_minhash_func(len(vocab), 2)
-
 def create_hash(vector: list, hash_ex: list):
-    # here I create the signatures (matching)
+    # Create the signatures (matching)
     signature = []
     for func in minhash_func:
-        for i in range(1, len(vocab) + 1):
-            id = hash_ex.index(i)
-            signature_value = vector[id]
-            print(f"{i} -> {id} -> {signature_value}")
-            if signature_value == 1:
-                print('we have a match!')
-                break  # if I find the 1st (1), then break and print 'we have a match!'
+        min_hash_value = float('inf')  # Initialize with positive infinity
+        for i in range(len(vocab)):
+            if vector[i] == 1:
+                # Hash the index using the hash function
+                hashed_index = hash_ex[i]
+                # Update the minimum hash value
+                min_hash_value = min(min_hash_value, hashed_index)
+
+        signature.append(min_hash_value)
     return signature
 
-# create signatures
-sign = create_hash(result, create_hash_func(len(vocab)))
+def jaccard_similarity(set_a, set_b):
+    intersection_size = len(set_a.intersection(set_b))
+    union_size = len(set_a.union(set_b))
+    return intersection_size / union_size if union_size != 0 else 0
 
-print(sign)
+# Test data
+a = set(shingle('The first test', 2))
+b = set(shingle('It is the best', 2))
+
+# Create vocabulary
+vocab = list(a.union(b))
+
+# One-hot encoding for sets a and b
+result_a = one_hot_encoding(vocab, list(a))
+result_b = one_hot_encoding(vocab, list(b))
+
+# Create MinHash functions
+minhash_func = build_minhash_func(len(vocab), 2)
+
+# Create MinHash signatures
+signature_a = create_hash(result_a, minhash_func[0])
+signature_b = create_hash(result_b, minhash_func[1])
+
+# Compute Jaccard similarity using MinHash signatures
+jaccard_sim = jaccard_similarity(set(signature_a), set(signature_b))
+
+print("Signature A:", signature_a)
+print("Signature B:", signature_b)
+print("Jaccard Similarity:", jaccard_sim)
