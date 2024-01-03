@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 
 #get scientist dblp awards from dblp site 
-def get_dblp_awards(dblp_url):
+def get_dblp_records(dblp_url):
     dblp_records = 0
     dblp_data = requests.get(dblp_url)
     dblp_soup = BeautifulSoup(dblp_data.text, 'html.parser')
@@ -115,20 +115,19 @@ def get_scientist_urls():
 
 
 
-#lastName, awards, education , dblp = get_scientist_data("https://en.wikipedia.org/wiki/Scott_Aaronson")
-
-#print(dblp)
-
 print ("Extracting urls")
 scientists = get_scientist_urls()
 print("Done")
 
 data = []
+count = 0
 
 print ("Extracting scientists data")
 
 for scientist in scientists:
     lastName, awards, education, dblp_records = get_scientist_data(scientist)
+    count += 1
+    print(count)
 
     if education and (dblp_records > 0):
         data.append([lastName, awards, education, dblp_records])
