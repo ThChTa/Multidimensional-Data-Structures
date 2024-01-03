@@ -4,6 +4,8 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
+import os
+
 
 
 
@@ -114,7 +116,6 @@ def get_scientist_urls():
     return scientist_urls                
 
 
-
 print ("Extracting urls")
 scientists = get_scientist_urls()
 print("Done")
@@ -135,6 +136,13 @@ print("Done")
 
 df = pd.DataFrame(data, columns=['lastName', 'awards', 'education', 'dblp_records'])
 
-df[['lastName', 'awards', 'education', 'dblp_records']].to_csv('scientists_data_complete.txt', index=False)
+csv_file_path = 'D:\Multidimensional-Data-Structures\Multidimensional-Data-Structures\data\scientists_data_complete.csv' # need to change for your specific file path in your pc
+
+try:
+    # Attempt to save the DataFrame to a CSV file
+    df[['lastName', 'awards', 'education', 'dblp_records']].to_csv(csv_file_path, index=False)
+    print("CSV file created successfully")
+except Exception as e:
+    print("Error occurred while saving CSV file:", e)
 
 print(df)
