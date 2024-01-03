@@ -4,11 +4,13 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
+import os
+
 
 
 
 #get scientist dblp awards from dblp site 
-def get_dblp_awards(dblp_url):
+def get_dblp_records(dblp_url):
     dblp_records = 0
     dblp_data = requests.get(dblp_url)
     dblp_soup = BeautifulSoup(dblp_data.text, 'html.parser')
@@ -114,21 +116,19 @@ def get_scientist_urls():
     return scientist_urls                
 
 
-
-#lastName, awards, education , dblp = get_scientist_data("https://en.wikipedia.org/wiki/Scott_Aaronson")
-
-#print(dblp)
-
 print ("Extracting urls")
 scientists = get_scientist_urls()
 print("Done")
 
 data = []
+count = 0
 
 print ("Extracting scientists data")
 
 for scientist in scientists:
     lastName, awards, education, dblp_records = get_scientist_data(scientist)
+    count += 1
+    print(count)
 
     if education and (dblp_records > 0):
         data.append([lastName, awards, education, dblp_records])
@@ -136,6 +136,13 @@ print("Done")
 
 df = pd.DataFrame(data, columns=['lastName', 'awards', 'education', 'dblp_records'])
 
-df[['lastName', 'awards', 'education', 'dblp_records']].to_csv('scientists_data_complete.txt', index=False)
+csv_file_path = 'D:\Multidimensional-Data-Structures\Multidimensional-Data-Structures\data\scientists_data_complete.csv' # need to change for your specific file path in your pc
+
+try:
+    # Attempt to save the DataFrame to a CSV file
+    df[['lastName', 'awards', 'education', 'dblp_records']].to_csv(csv_file_path, index=False)
+    print("CSV file created successfully")
+except Exception as e:
+    print("Error occurred while saving CSV file:", e)
 
 print(df)
