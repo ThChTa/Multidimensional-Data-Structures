@@ -20,15 +20,15 @@ class RTreeIndexer:
     def _build_index(self):
         for i, row in self.data.iterrows():
             # Αντικαταστήστε 'surname', 'awards', 'DBLP_Record' με τα σωστά ονόματα στηλών
-            surname = letter_to_number(row['surname'][0])
+            surname = letter_to_number(row['lastName'][0])
             awards = row['awards']
-            dblp_record = row['dblp']
+            dblp_record = row['dblp_records']
             education = row['education']
             
 
             # Αντικαταστήστε αυτές τις συντεταγμένες με τη σωστή λογική μετατροπής στοιχείων σε συντεταγμένες
             self.idx3d.insert(i, (surname, awards, dblp_record, surname, awards, dblp_record))
-            data =(row['surname'], row['awards'], row['education'], row['dblp'])
+            data =(row['lastName'], row['awards'], row['education'], row['dblp_records'])
             self.datas.append(data)
             # print(self.idx3d)
             
@@ -43,12 +43,12 @@ class RTreeIndexer:
         print(results)
         query_results = []
         for result in results:
-            surname, awards, education, dblp = self.datas[result]
-            query_results.append({"surname": surname, "awards": awards, "education": education, "dblp": dblp})
+            lastName, awards, education, dblp_records = self.datas[result]
+            query_results.append({"lastName": lastName, "awards": awards, "education": education, "dblp_records": dblp_records})
         
         return query_results
 
-rtree = RTreeIndexer('./data/data.csv')
-query_results=rtree.query('A', 'A', 2, 100, 160)
-print(query_results)
+# rtree = RTreeIndexer('./data/scientists_data_complete.csv')
+# query_results=rtree.query('A', 'Z', 2, 0, 160)
+# print(query_results)
 
