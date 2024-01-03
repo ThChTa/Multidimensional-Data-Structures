@@ -4,6 +4,23 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
+
+
+
+#get scientist dblp awards from dblp site 
+def get_dblp_awards(dblp_url):
+    dblp_records = 0
+    dblp_data = requests.get(dblp_url)
+    dblp_soup = BeautifulSoup(dblp_data.text, 'html.parser')
+
+    dblp_section = dblp_soup.find('div', id='publ-section' , class_= 'section')
+    if dblp_section.find_all('li'):
+        dblp_records = len(dblp_section.find_all('li', class_=lambda c: c and 'toc' in c.split()))
+
+    return dblp_records
+
+
+
 #get scientist's data from url
 
 def get_scientist_data(url):
@@ -54,7 +71,23 @@ def get_scientist_data(url):
             next = next.find_next()
         education = ' '.join(education_list)
 
-    return lastName, awards, education
+    
+
+    #get dblp_records
+    dblp_records = 0 
+    authority_control_box = soup.find('div', class_='navbox authority-control')
+
+    if authority_control_box and authority_control_box.find('a', string='DBLP'):
+        dblp_anchor = authority_control_box.find('a', string='DBLP')
+        dblp_url = dblp_anchor.get('href')
+        dblp_records = get_dblp_records(dblp_url)
+
+
+
+
+    return lastName, awards, education, dblp_records
+
+
 
 
 
@@ -82,7 +115,10 @@ def get_scientist_urls():
 
 
 
-# lastName, awards, education = get_scientist_data("https://en.wikipedia.org/wiki/Scott_Aaronson")
+#lastName, awards, education , dblp = get_scientist_data("https://en.wikipedia.org/wiki/Scott_Aaronson")
+
+#print(dblp)
+
 print ("Extracting urls")
 scientists = get_scientist_urls()
 print("Done")
@@ -92,15 +128,14 @@ data = []
 print ("Extracting scientists data")
 
 for scientist in scientists:
-    lastName, awards, education = get_scientist_data(scientist)
+    lastName, awards, education, dblp_records = get_scientist_data(scientist)
 
-    if education:
-        data.append([lastName, awards, education])
+    if education and (dblp_records > 0):
+        data.append([lastName, awards, education, dblp_records])
 print("Done")
 
-df = pd.DataFrame(data, columns=['lastName', 'awards', 'education'])
+df = pd.DataFrame(data, columns=['lastName', 'awards', 'education', 'dblp_records'])
 
-df[['lastName', 'awards', 'education']].to_csv('scientist_data.txt', index=False)
+df[['lastName', 'awards', 'education', 'dblp_records']].to_csv('scientists_data_complete.txt', index=False)
 
 print(df)
-
