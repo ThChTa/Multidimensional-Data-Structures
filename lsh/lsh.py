@@ -2,10 +2,10 @@ from random import randint, shuffle
 
 # Shingle function
 def shingle(text: str, k: int):
-    shingle_list = []
+    shingle_set = []
     for i in range(len(text) - k + 1):
-        shingle_list.append(text[i:i+k])
-    return shingle_list
+        shingle_set.append(text[i:i+k])
+    return set(shingle_set)
 
 # One-hot encoding
 def one_hot_encoding(vocab, data):
@@ -40,16 +40,20 @@ def create_hash(vector: list):
     return signature
 
 def jaccard_similarity(set_a, set_b):
-    intersection_size = len(set_a.intersection(set_b))
-    union_size = len(set_a.union(set_b))
-    return intersection_size / union_size if union_size != 0 else 0
+    #intersection_size = len(set_a.intersection(set_b))
+    #union_size = len(set_a.union(set_b))
+    return len(set_a.intersection(set_b)) / len(set_a.union(set_b))
 
 # Test data
-a = set(shingle('The first test is the best', 2))
-b = set(shingle('It is the best', 2))
+a = shingle('The first test is the best', 2)
+b = shingle('It is the best', 2)
+
+print("shingle a: ", a)
+print("shingle b: ", b)
 
 # Create vocabulary
-vocab = list(a.union(b))
+vocab = a.union(b)
+print("vocab:", vocab)
 
 # One-hot encoding for sets a and b
 result_a = one_hot_encoding(vocab, list(a))
@@ -63,7 +67,7 @@ signature_a = create_hash(result_a)
 signature_b = create_hash(result_b)
 
 # Compute Jaccard similarity using MinHash signatures
-jaccard_sim = jaccard_similarity(set(signature_a), set(signature_b))
+jaccard_sim = jaccard_similarity(set(signature_a), set(signature_b)), jaccard_similarity(a,b)
 
 print("Signature A:", signature_a)
 print("Signature B:", signature_b)
@@ -73,15 +77,12 @@ print("Jaccard Similarity:", jaccard_sim)
 
 # LSH 
 def split_vector(signature, b):
-    r = len(signature) // b
-    remainder = len(signature) % b
-
+    assert len(signature) % b == 0
+    r = int(len(signature)/b)
+#splitting signature in b parts
     subvecs = []
-    start_idx = 0
-    for i in range(b):
-        end_idx = start_idx + r + (1 if i < remainder else 0)
-        subvecs.append(signature[start_idx:end_idx])
-        start_idx = end_idx
+    for i in range(b, len(signature), r):
+        subvecs.append(signature[i: i+r])
 
     return subvecs
 
@@ -97,7 +98,7 @@ for a_rows, b_rows in zip(band_a, band_b):
         print(f"Candidate pair: {a_rows} == {b_rows}")
         break
     else:
-        print("FAIL!")
+        print("No candidate pair found!")
         break
 
 
