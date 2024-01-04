@@ -4,7 +4,7 @@ from rtree import index
 
 #Μετατροπή γράμματος σε αριθμό 
 def letter_to_number(letter):
-    return ord(letter.upper()) - 65
+    return ord(letter.lower()) - 97
 
 class RTreeIndexer:
     def __init__(self, csv_file):
@@ -49,6 +49,6 @@ class RTreeIndexer:
         return query_results
 
 # rtree = RTreeIndexer('./data/scientists_data_complete.csv')
-# query_results=rtree.query('A', 'Z', 2, 0, 160)
+# query_results=rtree.query('A', 'Z', 1, 0, 1000)
 # print(query_results)
 
