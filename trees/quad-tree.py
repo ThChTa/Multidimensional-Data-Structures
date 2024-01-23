@@ -130,7 +130,7 @@ def read_data():
         x = alphabet_index(df.iloc[i]['lastName'][0])#we use the number of the first letter of the name
         y = df.iloc[i]['awards']
         z = df.iloc[i]['dblp_records']
-        data = (df.iloc[i]['lastName'], df.iloc[i]['awards'], df.iloc[i]['dblp_records'])
+        data = (df.iloc[i]['lastName'], df.iloc[i]['awards'],df.iloc[i]['education'], df.iloc[i]['dblp_records'])
         points.append((x, y, z, data))
 
     return points
@@ -150,7 +150,7 @@ def build_data_quad_tree():
     for point in point_objects:
         count += 1
         data_quad_tree.insert(point)
-    print (count)
+    #print (count)  
     return data_quad_tree
 
 def test_data_quad_tree(quad_tree,min_l,max_l,min_aw,_min_dblp,_max_dblp):
@@ -180,16 +180,23 @@ def test_data_quad_tree(quad_tree,min_l,max_l,min_aw,_min_dblp,_max_dblp):
 
     query_results = quad_tree.query(query_space, [])
 
+    print("Number of scientists found:")
     count=0
-    print("Scientists within the specified boundaries:")
+    results = []
+    
     for res in query_results:
-        print(res.data)
+        results.append({
+            "lastName": res.data[0],
+            "awards": res.data[1],
+            "education": res.data[2],
+            "dblp_records": res.data[3]
+        })
         count+=1
 
     print(count)
- 
+    return results
 
 # Call the function to build and test the Quad Tree
 quad_tree = build_data_quad_tree()
-test_data_quad_tree(quad_tree,'d','t',4,32,180)
-
+quad_tree_results = test_data_quad_tree(quad_tree,'d','t',4,32,180)
+print(quad_tree_results)
