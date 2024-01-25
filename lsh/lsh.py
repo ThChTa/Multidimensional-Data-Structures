@@ -77,11 +77,13 @@ def lsh_for_multiple_strings(strings, k, nbits, bands):
     #Create MinHash signatures for each string
     signatures = [create_hash(one_hot, minhash_func[i]) for i, one_hot in enumerate(one_hots)]
 
-    #Perform LSH
     for i in range(len(strings)):
         for j in range(i + 1, len(strings)):
             jaccard_sim = jaccard_similarity(set(signatures[i]), set(signatures[j]))
-            print(f"Jaccard Similarity between {i+1} and {j+1}: {jaccard_sim}")
+            if jaccard_sim >= 0.4:   #example of Threshold
+                print(f"Jaccard Similarity between {i+1} and {j+1}\n")
+                print(f"Education {i+1}:\n\n{strings[i]}\nEducation {j+1}:\n\n{strings[j]}\n\n")
+                print("=============================================================================\n")
             
             
 user_choice = input("This is our LSH function!, For r_tree + LSH press 1, For kd_tree + LSH press 2, For quad_tree + LSH press 3, For range_tree + LSH press 4")
