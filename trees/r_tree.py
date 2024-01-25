@@ -50,7 +50,7 @@ class RTreeIndexer:
         return query_results
 
 rtree = RTreeIndexer('./data/scientists_data_complete.csv')
-query_results=rtree.query('A', 'C', 1, 0, 1000)
+query_results=rtree.query('A', 'A', 3, 0, 200)
 #print(query_results)
 
 #create an array for the education for LSH

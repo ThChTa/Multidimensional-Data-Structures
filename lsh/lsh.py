@@ -1,5 +1,7 @@
-from random import randint, shuffle
+from random import randint, shuffle, seed
 
+# Set a seed for random number generation to ensure reproducibility
+seed(42)
 import sys
 sys.path.insert(0, 'C:\\Users\\Thomas\\Desktop\\Multidimensional-Data-Structures\\trees')
 from r_tree import education_array_from_r_tree
@@ -9,12 +11,14 @@ from range_tree import education_array_from_range_tree
 
 
 
-#Shingle function
+# Modified shingle function to tokenize text into words
 def shingle(text: str, k: int):
+    words = text.decode('utf-8').split()  # Decode to UTF-8 and tokenize text into words
     shingle_set = []
-    for i in range(len(text) - k + 1):
-        shingle_set.append(text[i:i+k])
+    for i in range(len(words) - k + 1):
+        shingle_set.append(" ".join(words[i:i+k]))  # Combine k consecutive words into a shingle
     return set(shingle_set)
+
 
 #One-hot encoding
 def one_hot_encoding(vocab, data):
@@ -37,14 +41,17 @@ def build_minhash_func(vocab_size: int, nbits: int, num_hashes: int):
     return hashes
 
 def create_hash(vector: list, minhash_func):
-    #Create the signatures (matching)
+    # Create the signatures (matching)
     signature = []
     for func in minhash_func:
-        for i in range(1, len(vector) + 1):
-            if vector[i-1] == func:
-                signature.append(i-1)
+        for i in range(len(vector)):
+            if vector[i] == 1 and i + 1 == func:
+                signature.append(i)
                 break
     return signature
+
+
+
 
 
 
@@ -62,43 +69,45 @@ def split_vector(signature, b):
         subvecs.append(signature[i: i+r])
     return subvecs
 
-#Function to perform LSH for multiple strings
+# Function to perform LSH for multiple strings
 def lsh_for_multiple_strings(strings, k, nbits, bands):
-    #Create shingles and vocabulary
+    # Create shingles and vocabulary
     shingles = [shingle(s, k) for s in strings]
     vocab = set().union(*shingles)
 
-    #One-hot encoding for each string
+    # One-hot encoding for each string
     one_hots = [one_hot_encoding(vocab, list(s)) for s in shingles]
 
-    #Create MinHash functions
+    # Create MinHash functions
     minhash_func = build_minhash_func(len(vocab), nbits, num_hashes=len(strings))
 
-    #Create MinHash signatures for each string
+    # Create MinHash signatures for each string
     signatures = [create_hash(one_hot, minhash_func[i]) for i, one_hot in enumerate(one_hots)]
 
     for i in range(len(strings)):
         for j in range(i + 1, len(strings)):
             jaccard_sim = jaccard_similarity(set(signatures[i]), set(signatures[j]))
-            if jaccard_sim >= 0.4:   #example of Threshold
+            if jaccard_sim >= 1:   # Example of Threshold
                 print(f"Jaccard Similarity between {i+1} and {j+1}\n")
                 print(f"Education {i+1}:\n\n{strings[i]}\nEducation {j+1}:\n\n{strings[j]}\n\n")
                 print("=============================================================================\n")
+
             
             
 user_choice = input("This is our LSH function!, For r_tree + LSH press 1, For kd_tree + LSH press 2, For quad_tree + LSH press 3, For range_tree + LSH press 4")
 if user_choice == '1':
-    # Call the function with data
-    lsh_for_multiple_strings(education_array_from_r_tree, k=2, nbits=20, bands=10)
+    # Call the function with data and use word shingles (k=1 for individual words)
+    lsh_for_multiple_strings(education_array_from_r_tree, k=1, nbits=20, bands=10)
+
 elif user_choice == '2':
     # Add code or function call for kd_tree + LSH
-    lsh_for_multiple_strings(education_array_from_kd_tree, k=2, nbits=20, bands=10)
+    lsh_for_multiple_strings(education_array_from_kd_tree, k=1, nbits=20, bands=10)
 elif user_choice == '3':
     # Add code or function call for quad_tree + LSH
-    lsh_for_multiple_strings(education_array_from_quad_tree, k=2, nbits=20, bands=10)
+    lsh_for_multiple_strings(education_array_from_quad_tree, k=1, nbits=20, bands=10)
 elif user_choice == '4':
     # Add code or function call for range_tree + LSH
-    lsh_for_multiple_strings(education_array_from_range_tree, k=2, nbits=20, bands=10)
+    lsh_for_multiple_strings(education_array_from_range_tree, k=1, nbits=20, bands=10)
 else:
     print("Invalid choice. Please enter a valid option.")
 
