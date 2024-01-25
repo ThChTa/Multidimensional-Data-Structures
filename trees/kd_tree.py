@@ -1,4 +1,6 @@
 import pandas as pd  # Εισαγωγή της βιβλιοθήκης pandas
+import numpy as np
+
 
 #Συνάρτηση για μετατροπή γραμμάτων σε αριθμούς
 def letter_to_index(letter):
@@ -113,5 +115,8 @@ def create_and_query_kdtree(file_path, min_letter, max_letter, min_awards, min_d
     return results
 
 #Δημιουργία και αναζήτηση στο KD δένδρο
-# kd_tree_results = create_and_query_kdtree("./data/scientists_data_complete.csv", 'A', 'A', 3, 0, 200)
-# print(kd_tree_results)
+kd_tree_results = create_and_query_kdtree(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv', 'A', 'A', 3, 0, 200)
+education_strings = [result["education"].encode('utf-8') for result in kd_tree_results]
+education_array_from_kd_tree = np.array(education_strings)
+print("len of kd_tree data = ",len(education_array_from_kd_tree))
+#print(kd_tree_results)

@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 def letter_to_number(letter):
     return ord(letter.lower()) - 97
@@ -300,7 +301,7 @@ class RangeTree3D:
 
 def build_range_tree():
     #Φορτώνει ένα αρχείο CSV σε ένα DataFrame
-    df = pd.read_csv("./data/scientists_data_complete.csv")
+    df = pd.read_csv(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv')
     points = []
 
     #Επαναλαμβάνει μέσα στο DataFrame και μετατρέπει κάθε γραμμή σε ένα σημείο
@@ -330,7 +331,7 @@ def query_range_tree(range_tree, min_letter, max_letter, num_awards, min_dblp, m
     range_tree.query(range_tree.root, x_range[0], x_range[1], y_range[0], y_range[1], z_range[0], z_range[1], query_results)
 
     final_results = []
-    df = pd.read_csv("./data/scientists_data_complete.csv")
+    df = pd.read_csv(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv')
    
     #Εξάγει και διαμορφώνει τα αποτελέσματα του ερωτήματος
     for result in query_results:
@@ -344,6 +345,9 @@ def query_range_tree(range_tree, min_letter, max_letter, num_awards, min_dblp, m
     return final_results  #Επιστρέφει τα διαμορφωμένα αποτελέσματα
 
 
-# range_tree = build_range_tree()
-# results = query_range_tree(range_tree, 'A', 'Z', 3, 0 ,200)
-# print(results)  
+range_tree = build_range_tree()
+results = query_range_tree(range_tree, 'A', 'A', 3, 0, 200)
+education_strings = [result.get("education","").encode('utf-8') for result in results]
+education_array_from_range_tree = np.array(education_strings)
+print("len of range_tree data = ",len(education_array_from_range_tree))
+#print(results)  

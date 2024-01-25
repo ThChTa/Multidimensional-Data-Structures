@@ -50,14 +50,14 @@ class RTreeIndexer:
         return query_results
 
 rtree = RTreeIndexer(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv')
-query_results=rtree.query('A', 'Z', 1, 0, 1000)
+query_results=rtree.query('A', 'C', 1, 0, 1000)
 #print(query_results)
 
 #create an array for the education for LSH
 education_strings = [result["education"].encode('utf-8') for result in query_results]
-education_array = np.array(education_strings)
-print("len = ",len(education_array))
-print(education_array)
+education_array_from_r_tree = np.array(education_strings)
+print("len of r_tree data = ",len(education_array_from_r_tree))
+#print(education_array)
 
 
 

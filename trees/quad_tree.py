@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 # Convert letters to indices
 def alphabet_index(letter):
@@ -122,7 +123,7 @@ class DataQuadTree:
         return found_points
 
 def read_data():
-    df = pd.read_csv("../data/scientists_data_complete.csv")
+    df = pd.read_csv(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv')
     points = []
 
     #insert data into points
@@ -180,7 +181,7 @@ def test_data_quad_tree(quad_tree,min_l,max_l,min_aw,_min_dblp,_max_dblp):
 
     query_results = quad_tree.query(query_space, [])
 
-    print("Number of scientists found:")
+    #print("Number of scientists found:")
     count=0
     results = []
     
@@ -193,10 +194,15 @@ def test_data_quad_tree(quad_tree,min_l,max_l,min_aw,_min_dblp,_max_dblp):
         })
         count+=1
 
-    print(count)
+    #print(count)
     return results
 
 # Call the function to build and test the Quad Tree
 quad_tree = build_data_quad_tree()
-quad_tree_results = test_data_quad_tree(quad_tree,'d','t',4,32,180)
-print(quad_tree_results)
+quad_tree_results = test_data_quad_tree(quad_tree,'A','A',3,0,200)
+
+#create an array for the education for LSH
+education_strings = [result["education"].encode('utf-8') for result in quad_tree_results]
+education_array_from_quad_tree = np.array(education_strings)
+print("len of quad_tree data = ",len(education_array_from_quad_tree))
+#print(quad_tree_results)
