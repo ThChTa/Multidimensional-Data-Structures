@@ -40,7 +40,7 @@ class RTreeIndexer:
         query_coordinates = (float(left_letter), awards_min, dblp_min, float(right_letter), float('inf'), dblp_max)#συντεταγμένες του query για να πάρουμε τα σχετικά αποτελέσματα
         
         results = list(self.idx3d.intersection(query_coordinates))
-        print(results)
+        
         #δομημένη επιστροφή των αποτελεσμάτων της αναζήτησης για χρήση τους στην πορεία
         query_results = []
         for result in results:
@@ -49,7 +49,7 @@ class RTreeIndexer:
         
         return query_results
 
-rtree = RTreeIndexer(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv')
+rtree = RTreeIndexer('./data/scientists_data_complete.csv')
 query_results=rtree.query('A', 'C', 1, 0, 1000)
 #print(query_results)
 

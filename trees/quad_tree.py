@@ -123,7 +123,7 @@ class DataQuadTree:
         return found_points
 
 def read_data():
-    df = pd.read_csv(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv')
+    df = pd.read_csv('./data/scientists_data_complete.csv')
     points = []
 
     #insert data into points

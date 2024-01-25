@@ -301,7 +301,7 @@ class RangeTree3D:
 
 def build_range_tree():
     #Φορτώνει ένα αρχείο CSV σε ένα DataFrame
-    df = pd.read_csv(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv')
+    df = pd.read_csv('./data/scientists_data_complete.csv')
     points = []
 
     #Επαναλαμβάνει μέσα στο DataFrame και μετατρέπει κάθε γραμμή σε ένα σημείο
@@ -331,7 +331,7 @@ def query_range_tree(range_tree, min_letter, max_letter, num_awards, min_dblp, m
     range_tree.query(range_tree.root, x_range[0], x_range[1], y_range[0], y_range[1], z_range[0], z_range[1], query_results)
 
     final_results = []
-    df = pd.read_csv(r'C:\Users\Thomas\Desktop\Multidimensional-Data-Structures\data\scientists_data_complete.csv')
+    df = pd.read_csv('./data/scientists_data_complete.csv')
    
     #Εξάγει και διαμορφώνει τα αποτελέσματα του ερωτήματος
     for result in query_results:
@@ -339,8 +339,9 @@ def query_range_tree(range_tree, min_letter, max_letter, num_awards, min_dblp, m
         #Ανακτά και αποθηκεύει σχετικές πληροφορίες
         surname = df.iloc[index]['lastName']
         awards = df.iloc[index]['awards']
+        education = df.iloc[index]['education']
         dblp_records = df.iloc[index]['dblp_records']
-        final_results.append({"surname": surname, "awards": awards, "dblp_records": dblp_records})
+        final_results.append({"surname": surname, "awards": awards, "education": education, "dblp_records": dblp_records})
 
     return final_results  #Επιστρέφει τα διαμορφωμένα αποτελέσματα
 
