@@ -87,12 +87,11 @@ def lsh_for_multiple_strings(strings, k, nbits, bands):
     for i in range(len(strings)):
         for j in range(i + 1, len(strings)):
             jaccard_sim = jaccard_similarity(set(signatures[i]), set(signatures[j]))
-            if jaccard_sim >= 1:   # Example of Threshold
+            if jaccard_sim >= 0.12:   # Example of Threshold
                 print(f"Jaccard Similarity between {i+1} and {j+1}\n")
                 print(f"Education {i+1}:\n\n{strings[i]}\nEducation {j+1}:\n\n{strings[j]}\n\n")
                 print("=============================================================================\n")
-
-            
+       
             
 user_choice = input("This is our LSH function!, For r_tree + LSH press 1, For kd_tree + LSH press 2, For quad_tree + LSH press 3, For range_tree + LSH press 4")
 if user_choice == '1':

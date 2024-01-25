@@ -51,7 +51,7 @@ class RTreeIndexer:
 
 rtree = RTreeIndexer('./data/scientists_data_complete.csv')
 query_results=rtree.query('A', 'A', 3, 0, 200)
-#print(query_results)
+print(query_results)
 
 #create an array for the education for LSH
 education_strings = [result["education"].encode('utf-8') for result in query_results]
