@@ -4,10 +4,10 @@ from random import randint, shuffle, seed
 seed(42)
 import sys
 sys.path.insert(0, 'C:\\Users\\Thomas\\Desktop\\Multidimensional-Data-Structures\\trees')
-from r_tree import education_array_from_r_tree
-from kd_tree import education_array_from_kd_tree
-from quad_tree import education_array_from_quad_tree
-from range_tree import education_array_from_range_tree
+from r_tree import query_results, education_array_from_r_tree
+from kd_tree import kd_tree_results, education_array_from_kd_tree
+from quad_tree import quad_tree_results, education_array_from_quad_tree
+from range_tree import results, education_array_from_range_tree
 
 
 
@@ -70,7 +70,7 @@ def split_vector(signature, b):
     return subvecs
 
 # Function to perform LSH for multiple strings
-def lsh_for_multiple_strings(strings, k, nbits, bands):
+def lsh_for_multiple_strings(strings, additional_info, k, nbits, bands):
     # Create shingles and vocabulary
     shingles = [shingle(s, k) for s in strings]
     vocab = set().union(*shingles)
@@ -88,25 +88,35 @@ def lsh_for_multiple_strings(strings, k, nbits, bands):
         for j in range(i + 1, len(strings)):
             jaccard_sim = jaccard_similarity(set(signatures[i]), set(signatures[j]))
             if jaccard_sim >= 0.12:   # Example of Threshold
-                print(f"Jaccard Similarity between {i+1} and {j+1}\n")
-                print(f"Education {i+1}:\n\n{strings[i]}\nEducation {j+1}:\n\n{strings[j]}\n\n")
+                print(f"\nJaccard Similarity between {i+1} and {j+1}\n")
+                print(f"Education {i+1}:\n\n{strings[i]}\n\nEducation {j+1}:\n\n{strings[j]}\n\n")
+                
+                print("Additional information:\n")
+                print(f"Info {i+1}: {additional_info[i]}\n")
+                print(f"Info {j+1}: {additional_info[j]}\n")
+                
+                
                 print("=============================================================================\n")
        
             
-user_choice = input("This is our LSH function!, For r_tree + LSH press 1, For kd_tree + LSH press 2, For quad_tree + LSH press 3, For range_tree + LSH press 4")
+user_choice = input("This is our LSH function!, For r_tree + LSH press 1, For kd_tree + LSH press 2, For quad_tree + LSH press 3, For range_tree + LSH press 4:\n")
 if user_choice == '1':
     # Call the function with data and use word shingles (k=1 for individual words)
-    lsh_for_multiple_strings(education_array_from_r_tree, k=1, nbits=20, bands=10)
+    info_from_r_tree = [f"Name: {result['lastName']}, Awards: {result['awards']}, DBLP Records: {result['dblp_records']}" for result in query_results]
+    lsh_for_multiple_strings(education_array_from_r_tree, info_from_r_tree, k=1, nbits=20, bands=10)
 
 elif user_choice == '2':
     # Add code or function call for kd_tree + LSH
-    lsh_for_multiple_strings(education_array_from_kd_tree, k=1, nbits=20, bands=10)
+    info_from_kd_tree = [f"Name: {result['lastName']}, Awards: {result['awards']}, DBLP Records: {result['dblp_records']}" for result in kd_tree_results]
+    lsh_for_multiple_strings(education_array_from_kd_tree, info_from_kd_tree, k=1, nbits=20, bands=10)
 elif user_choice == '3':
     # Add code or function call for quad_tree + LSH
-    lsh_for_multiple_strings(education_array_from_quad_tree, k=1, nbits=20, bands=10)
+    info_from_quad_tree = [f"Name: {result['lastName']}, Awards: {result['awards']}, DBLP Records: {result['dblp_records']}" for result in quad_tree_results]
+    lsh_for_multiple_strings(education_array_from_quad_tree, info_from_quad_tree, k=1, nbits=20, bands=10)
 elif user_choice == '4':
     # Add code or function call for range_tree + LSH
-    lsh_for_multiple_strings(education_array_from_range_tree, k=1, nbits=20, bands=10)
+    info_from_range_tree = [f"Name: {result['lastName']}, Awards: {result['awards']}, DBLP Records: {result['dblp_records']}" for result in results]
+    lsh_for_multiple_strings(education_array_from_range_tree, info_from_range_tree, k=1, nbits=20, bands=10)
 else:
     print("Invalid choice. Please enter a valid option.")
 
