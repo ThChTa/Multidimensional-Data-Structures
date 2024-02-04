@@ -204,5 +204,5 @@ quad_tree_results = test_data_quad_tree(quad_tree,'A','A',3,0,200)
 #create an array for the education for LSH
 education_strings = [result["education"].encode('utf-8') for result in quad_tree_results]
 education_array_from_quad_tree = np.array(education_strings)
-print("len of quad_tree data = ",len(education_array_from_quad_tree))
+print("Quad-Tree Data Results = ",len(education_array_from_quad_tree))
 #print(quad_tree_results)
