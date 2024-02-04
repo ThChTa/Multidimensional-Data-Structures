@@ -198,11 +198,11 @@ def test_data_quad_tree(quad_tree,min_l,max_l,min_aw,_min_dblp,_max_dblp):
     return results
 
 # Call the function to build and test the Quad Tree
-quad_tree = build_data_quad_tree()
-quad_tree_results = test_data_quad_tree(quad_tree,'A','A',3,0,200)
+# quad_tree = build_data_quad_tree()
+# quad_tree_results = test_data_quad_tree(quad_tree,'A','A',3,0,200)
 
-#create an array for the education for LSH
-education_strings = [result["education"].encode('utf-8') for result in quad_tree_results]
-education_array_from_quad_tree = np.array(education_strings)
-print("Quad-Tree Data Results = ",len(education_array_from_quad_tree))
+# #create an array for the education for LSH
+# education_strings = [result["education"].encode('utf-8') for result in quad_tree_results]
+# education_array_from_quad_tree = np.array(education_strings)
+# print("Quad-Tree Data Results = ",len(education_array_from_quad_tree))
 #print(quad_tree_results)

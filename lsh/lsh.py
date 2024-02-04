@@ -2,13 +2,12 @@ from random import randint, shuffle, seed
 
 # Set a seed for random number generation to ensure reproducibility
 seed(42)
-import sys
-sys.path.insert(0, './trees')
-from r_tree import query_results, education_array_from_r_tree
-from kd_tree import kd_tree_results, education_array_from_kd_tree
-from quad_tree import quad_tree_results, education_array_from_quad_tree
-from range_tree import results, education_array_from_range_tree
-1
+# import sys
+# sys.path.insert(0, './trees')
+# from r_tree import query_results, education_array_from_r_tree
+# from kd_tree import kd_tree_results, education_array_from_kd_tree
+# from quad_tree import quad_tree_results, education_array_from_quad_tree
+# from range_tree import results, education_array_from_range_tree
 
 
 # Modified shingle function to tokenize text into words
@@ -70,7 +69,7 @@ def split_vector(signature, b):
     return subvecs
 
 # Function to perform LSH for multiple strings
-def lsh_for_multiple_strings(strings, additional_info, k, nbits, bands):
+def lsh_for_multiple_strings(strings, additional_info, threshold, k, nbits, bands):
     # Create shingles and vocabulary
     shingles = [shingle(s, k) for s in strings]
     vocab = set().union(*shingles)
@@ -83,11 +82,12 @@ def lsh_for_multiple_strings(strings, additional_info, k, nbits, bands):
 
     # Create MinHash signatures for each string
     signatures = [create_hash(one_hot, minhash_func[i]) for i, one_hot in enumerate(one_hots)]
-
+    flag=0
     for i in range(len(strings)):
         for j in range(i + 1, len(strings)):
             jaccard_sim = jaccard_similarity(set(signatures[i]), set(signatures[j]))
-            if jaccard_sim >= 0.1:   # Example of Threshold
+            if jaccard_sim >= threshold:   # Example of Threshold
+                flag+=flag
                 print(f"\nJaccard Similarity between {i+1} and {j+1}\n")
                 print(f"Education {i+1}:\n\n{strings[i]}\n\nEducation {j+1}:\n\n{strings[j]}\n\n")
                 
@@ -95,27 +95,9 @@ def lsh_for_multiple_strings(strings, additional_info, k, nbits, bands):
                 print(f"Info {i+1}: {additional_info[i]}\n")
                 print(f"Info {j+1}: {additional_info[j]}\n")
                 print("=============================================================================\n")
-       
+    if flag==0:
+        print("No results found for the given threshold. Try again.")   
             
-user_choice = input("For r_tree + LSH press 1, For kd_tree + LSH press 2, For quad_tree + LSH press 3, For range_tree + LSH press 4:\n")
-if user_choice == '1':
-    # Call the function with data and use word shingles (k=1 for individual words)
-    info_from_r_tree = [f"Name: {result['lastName']}, Awards: {result['awards']}, DBLP Records: {result['dblp_records']}" for result in query_results]
-    lsh_for_multiple_strings(education_array_from_r_tree, info_from_r_tree, k=1, nbits=20, bands=10)
 
-elif user_choice == '2':
-    # Add code or function call for kd_tree + LSH
-    info_from_kd_tree = [f"Name: {result['lastName']}, Awards: {result['awards']}, DBLP Records: {result['dblp_records']}" for result in kd_tree_results]
-    lsh_for_multiple_strings(education_array_from_kd_tree, info_from_kd_tree, k=1, nbits=20, bands=10)
-elif user_choice == '3':
-    # Add code or function call for quad_tree + LSH
-    info_from_quad_tree = [f"Name: {result['lastName']}, Awards: {result['awards']}, DBLP Records: {result['dblp_records']}" for result in quad_tree_results]
-    lsh_for_multiple_strings(education_array_from_quad_tree, info_from_quad_tree, k=1, nbits=20, bands=10)
-elif user_choice == '4':
-    # Add code or function call for range_tree + LSH
-    info_from_range_tree = [f"Name: {result['lastName']}, Awards: {result['awards']}, DBLP Records: {result['dblp_records']}" for result in results]
-    lsh_for_multiple_strings(education_array_from_range_tree, info_from_range_tree, k=1, nbits=20, bands=10)
-else:
-    print("Invalid choice. Please enter a valid option.")
 
 

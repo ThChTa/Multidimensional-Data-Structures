@@ -115,15 +115,15 @@ def create_and_query_kdtree(file_path, min_letter, max_letter, min_awards, min_d
     return results
 
 #Δημιουργία και αναζήτηση στο KD δένδρο
-kd_tree_results = create_and_query_kdtree('./data/scientists_data_complete.csv', 'A', 'A', 3, 0, 200)
-lastname = [result["lastName"].encode('utf-8') for result in kd_tree_results]
-awards = [str(result["awards"]).encode('utf-8') for result in kd_tree_results]
-education_strings = [result["education"].encode('utf-8') for result in kd_tree_results]
-dblp_records = [str(result["dblp_records"]).encode('utf-8') for result in kd_tree_results]
+# kd_tree_results = create_and_query_kdtree('./data/scientists_data_complete.csv', 'A', 'A', 3, 0, 200)
+# lastname = [result["lastName"].encode('utf-8') for result in kd_tree_results]
+# awards = [str(result["awards"]).encode('utf-8') for result in kd_tree_results]
+# education_strings = [result["education"].encode('utf-8') for result in kd_tree_results]
+# dblp_records = [str(result["dblp_records"]).encode('utf-8') for result in kd_tree_results]
 
-lastname_array_from_kd_tree = np.array(lastname)
-awards_array_from_kd_tree = np.array(awards)
-education_array_from_kd_tree = np.array(education_strings)  #for lsh
-dblp_records_array_from_kd_tree = [str(result["dblp_records"]).encode('utf-8') for result in kd_tree_results]
-print("KD-Tree Data Results = ",len(education_array_from_kd_tree))
+# lastname_array_from_kd_tree = np.array(lastname)
+# awards_array_from_kd_tree = np.array(awards)
+# education_array_from_kd_tree = np.array(education_strings)  #for lsh
+# dblp_records_array_from_kd_tree = [str(result["dblp_records"]).encode('utf-8') for result in kd_tree_results]
+# print("KD-Tree Data Results = ",len(education_array_from_kd_tree))
 #print(kd_tree_results)
