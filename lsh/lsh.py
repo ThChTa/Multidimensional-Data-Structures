@@ -3,7 +3,7 @@ from random import randint, shuffle, seed
 # Set a seed for random number generation to ensure reproducibility
 seed(42)
 import sys
-sys.path.insert(0, './trees')
+sys.path.insert(0, 'C:\\Users\\Thomas\\Desktop\\Multidimensional-Data-Structures\\trees')
 from r_tree import education_array_from_r_tree
 from kd_tree import education_array_from_kd_tree
 from quad_tree import education_array_from_quad_tree
@@ -87,7 +87,7 @@ def lsh_for_multiple_strings(strings, k, nbits, bands):
     for i in range(len(strings)):
         for j in range(i + 1, len(strings)):
             jaccard_sim = jaccard_similarity(set(signatures[i]), set(signatures[j]))
-            if jaccard_sim >= 0.02:   # Example of Threshold
+            if jaccard_sim >= 0.12:   # Example of Threshold
                 print(f"Jaccard Similarity between {i+1} and {j+1}\n")
                 print(f"Education {i+1}:\n\n{strings[i]}\nEducation {j+1}:\n\n{strings[j]}\n\n")
                 print("=============================================================================\n")
