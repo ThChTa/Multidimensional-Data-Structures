@@ -69,7 +69,7 @@ def split_vector(signature, b):
     return subvecs
 
 # Function to perform LSH for multiple strings
-def lsh_for_multiple_strings(strings, additional_info, threshold, k, nbits, bands):
+def lsh_for_multiple_strings(strings, additional_info, threshold, print, k, nbits, bands):
     # Create shingles and vocabulary
     shingles = [shingle(s, k) for s in strings]
     vocab = set().union(*shingles)
@@ -86,16 +86,17 @@ def lsh_for_multiple_strings(strings, additional_info, threshold, k, nbits, band
     for i in range(len(strings)):
         for j in range(i + 1, len(strings)):
             jaccard_sim = jaccard_similarity(set(signatures[i]), set(signatures[j]))
-            if jaccard_sim >= threshold:   # Example of Threshold
-                flag+=flag
-                print(f"\nJaccard Similarity between {i+1} and {j+1}\n")
-                print(f"Education {i+1}:\n\n{strings[i]}\n\nEducation {j+1}:\n\n{strings[j]}\n\n")
-                
-                print("Additional information:\n")
-                print(f"Info {i+1}: {additional_info[i]}\n")
-                print(f"Info {j+1}: {additional_info[j]}\n")
-                print("=============================================================================\n")
-    if flag==0:
+            if print==1:
+                if jaccard_sim >= threshold:   # Example of Threshold
+                    flag+=flag
+                    print(f"\nJaccard Similarity between {i+1} and {j+1}\n")
+                    print(f"Education {i+1}:\n\n{strings[i]}\n\nEducation {j+1}:\n\n{strings[j]}\n\n")
+                    
+                    print("Additional information:\n")
+                    print(f"Info {i+1}: {additional_info[i]}\n")
+                    print(f"Info {j+1}: {additional_info[j]}\n")
+                    print("=============================================================================\n")
+    if (flag==0)and(print==1):
         print("No results found for the given threshold. Try again.")   
             
 
