@@ -341,7 +341,7 @@ def query_range_tree(range_tree, min_letter, max_letter, num_awards, min_dblp, m
         awards = df.iloc[index]['awards']
         education = df.iloc[index]['education']
         dblp_records = df.iloc[index]['dblp_records']
-        final_results.append({"lastName": surname, "awards": awards, "education": education, "dblp_records": dblp_records})
+        final_results.append({"surname": surname, "awards": awards, "education": education, "dblp_records": dblp_records})
 
     return final_results  #Επιστρέφει τα διαμορφωμένα αποτελέσματα
 
