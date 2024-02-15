@@ -138,7 +138,7 @@ elif user_choice=='2':
             pass
 
 
-    num_runs=10
+    num_runs=5
     times_method1 = []
     times_method2 = []
     times_method3 = []
@@ -151,15 +151,15 @@ elif user_choice=='2':
         # Generate a random capital letter greater than or equal to min_letter for max_letter
         max_letter = random.choice(string.ascii_uppercase[string.ascii_uppercase.index(min_letter):])
         awards = random.randint(0, 6)
-        threshold = round(random.uniform(0.4, 0.8),2)
+        threshold = round(random.uniform(0.1, 0.8),2)
         min_dblp = random.randint(0,199)
         max_dblp = random.randint(min_dblp, 200)
-        print(min_letter)
-        print(max_letter)
-        print(awards)
-        print(threshold)
-        print(min_dblp)
-        print(max_dblp)
+        # print(min_letter)
+        # print(max_letter)
+        # print(awards)
+        # print(threshold)
+        # print(min_dblp)
+        # print(max_dblp)
         time_method1 = timeit.timeit(lambda: r_tree(min_letter, max_letter, awards, min_dblp, max_dblp, threshold), number=10)
         times_method1.append(time_method1)
 

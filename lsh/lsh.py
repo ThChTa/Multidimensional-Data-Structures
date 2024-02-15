@@ -98,7 +98,7 @@ def lsh_for_multiple_strings(strings, additional_info, threshold, printer, k, nb
                     print(f"Info {j+1}: {additional_info[j]}\n")
                     print("=============================================================================\n")
                     
-    print(flag)
+    # print(flag)
     if (flag==0)and(printer==1):
         print("No results found for the given threshold. Try again.")   
             
