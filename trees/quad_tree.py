@@ -136,18 +136,21 @@ def read_data():
 
     return points
 
-def build_data_quad_tree():
-    points = read_data()
+def build_data_quad_tree(): 
+    points = read_data() 
     point_objects = [DataPoint(x, y, z, data) for x, y, z, data in points]
 
+    # Find the maximum x, y, and z values among the data points
     max_x = max(point[0] for point in points) 
     max_y = max(point[1] for point in points) 
     max_z = max(point[2] for point in points) 
 
-
+    # Create a DataSpace (boundary) based on the maximum values
     boundary = DataSpace(max_x/2  , max_y/2  , max_z/2  , max_x  , max_y , max_z )
-    data_quad_tree = DataQuadTree(boundary, max_points=4)
+    # Create a DataQuadTree with the specified boundary and maximum points per node
+    data_quad_tree = DataQuadTree(boundary, max_points=8)
     count = 0
+    # Insert each DataPoint object into the DataQuadTree
     for point in point_objects:
         count += 1
         data_quad_tree.insert(point)
